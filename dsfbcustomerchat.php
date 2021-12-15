@@ -36,7 +36,7 @@ class Dsfbcustomerchat extends Module
     {
         $this->name = 'dsfbcustomerchat';
         $this->tab = 'advertising_marketing';
-        $this->version = '1.0.0';
+        $this->version = '1.1.0';
         $this->author = 'Dark-Side.pro';
         $this->need_instance = 1;
         $this->module_key = 'b47ffa5f382e88d449adc62270b0a46f';
