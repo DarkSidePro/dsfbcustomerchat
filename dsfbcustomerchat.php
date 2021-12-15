@@ -137,9 +137,6 @@ class Dsfbcustomerchat extends Module
     public function install()
     {
         $this->createTab();
-        Configuration::deleteByName('ds_Fbcustomerchat_COLOR', null);
-        Configuration::updateValue('ds_Fbcustomerchat_POSITION', null);
-
         return parent::install() &&
             $this->registerHook('header') &&
             $this->registerHook('backOfficeHeader') &&
@@ -149,9 +146,6 @@ class Dsfbcustomerchat extends Module
     public function uninstall()
     {
         $this->tabRem();
-        Configuration::deleteByName('ds_Fbcustomerchat_FB');
-        Configuration::deleteByName('ds_Fbcustomerchat_COLOR');
-        Configuration::deleteByName('ds_Fbcustomerchat_POSITION');
 
         return parent::uninstall();
     }
@@ -314,7 +308,7 @@ class Dsfbcustomerchat extends Module
         if (!Validate::isColor($color) == true) {
             $msg .= $this->displayError($this->trans('You must correct fill color field', array(), 'Modules.dsfbcustomerchat.Admin'));
         } else {
-            if (Configuration::updateValue('ds_Fbcustomerchat_COLOR', (int) $color)) {
+            if (Configuration::updateValue('ds_Fbcustomerchat_COLOR', $color)) {
                 $msg .= $this->displayConfirmation($this->trans('Color field updated successfully.', array(), 'Admin.Dsdeliveryhours.Success'));
             } else {
                 $msg .= $this->displayError($this->trans('Color field updating error', array(), 'Modules.dsfbcustomerchat.Admin'));
@@ -361,12 +355,17 @@ class Dsfbcustomerchat extends Module
         $position = Configuration::get('ds_Fbcustomerchat_POSITION');
         $msgLogged = Configuration::get('ds_Fbcustomerchat_GREETINGS');
         $msgOut = Configuration::get('ds_Fbcustomerchat_LOGGEDOUT');
+        $locale = $this->context->language->locale;
+        $locale = str_replace('-', '_', $locale );
+
+
         $this->context->smarty->assign('facebook', array(
             'id' => $fb,
             'color' => $color,
             'position' => $position,
             'msgLogged' => $msgLogged,
             'msgOut' => $msgOut,
+            'locale' => $locale
         ));
 
         $output = $this->display(__FILE__, 'views/templates/hook/hookDisplayFooter.tpl');
